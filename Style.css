@@ -1,0 +1,263 @@
+/* Base Styles & Theme */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1a1a2e;
+    color: #e0e0e0;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 10;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #e94560;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+h1, h2 {
+    color: #fff;
+    margin-top: 0;
+}
+
+/* Background Decorations */
+.anime-bg {
+    position: fixed;
+    top: 0;
+    width: 300px;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2;
+    z-index: 1;
+}
+
+.bg-left {
+    left: 0;
+    background-image: url('https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&q=80&w=500');
+}
+
+.bg-right {
+    right: 0;
+    background-image: url('https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&q=80&w=500');
+}
+
+/* Buttons */
+.btn {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.btn:hover {
+    background-color: #444;
+}
+
+.btn-primary {
+    background-color: #e94560;
+}
+
+.btn-primary:hover {
+    background-color: #ff5272;
+}
+
+.btn-success {
+    background-color: #4CAF50;
+}
+
+.btn-success:hover {
+    background-color: #45a049;
+}
+
+.btn:disabled {
+    background-color: #666;
+    cursor: not-allowed;
+}
+
+/* Forms & Panels */
+input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #444;
+    background: #222;
+    color: white;
+}
+
+input:focus {
+    outline: 2px solid #e94560;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.panel {
+    background-color: #16213e;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.input-group input {
+    flex-grow: 1;
+    min-width: 200px;
+}
+
+.admin-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hint {
+    color: #aaa;
+    font-size: 0.9em;
+}
+
+.search-bar {
+    margin-bottom: 20px;
+}
+
+.search-bar input {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+/* List Styles */
+.lists-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.anime-list {
+    background-color: #0f3460;
+    min-height: 100px;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* CSS Counter for auto-numbering */
+.ranked {
+    counter-reset: rank;
+}
+
+/* Anime Item Row */
+.anime-item {
+    display: flex;
+    align-items: center;
+    background-color: #1a1a2e;
+    border-radius: 6px;
+    padding: 8px;
+    gap: 15px;
+    cursor: grab;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.anime-item:hover {
+    transform: translateX(5px);
+    box-shadow: -5px 5px 10px rgba(0,0,0,0.3);
+}
+
+.anime-item:active {
+    cursor: grabbing;
+}
+
+/* Auto-numbering for the ranked list */
+.ranked .anime-item::before {
+    counter-increment: rank;
+    content: counter(rank);
+    font-size: 20px;
+    font-weight: bold;
+    color: #e94560;
+    width: 30px;
+    text-align: center;
+}
+
+.anime-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+    background-color: #333;
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0;
+}
+
+.anime-title {
+    width: 160px;
+    font-size: 18px;
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+/* Comment field styling */
+.anime-comment {
+    flex-grow: 1;
+    background: #222;
+    border: 1px dashed #444;
+    color: #fff;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.anime-comment:focus {
+    border-color: #e94560;
+    outline: none;
+    background: #111;
+}
+
+.anime-comment:disabled {
+    background: transparent;
+    border-color: transparent;
+    color: #aaa;
+    cursor: grab;
+}
+
+/* Delete Button (Only visible in admin mode) */
+.delete-btn {
+    background: transparent;
+    color: #ff5252;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    display: none;
+    padding: 0 10px;
+}
+
+.delete-btn:hover {
+    color: #ff0000;
+    transform: scale(1.2);
+}
+
+body.admin-mode .delete-btn {
+    display: block;
+}

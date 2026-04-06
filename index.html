@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Anime Top List</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+</head>
+<body>
+    <div class="anime-bg bg-left"></div>
+    <div class="anime-bg bg-right"></div>
+
+    <div class="container">
+        <header>
+            <h1>🏆 My Anime Top List</h1>
+            <button id="loginBtn" class="btn">Login to Edit</button>
+        </header>
+
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search for an anime in the list...">
+        </div>
+
+        <div id="adminPanel" class="hidden panel">
+            <div class="input-group">
+                <input type="text" id="animeName" placeholder="Enter Anime name (e.g., Naruto)">
+                <button id="addAnimeBtn" class="btn btn-primary">Search & Add</button>
+            </div>
+            <div class="admin-actions">
+                <button id="saveBtn" class="btn btn-success">Save List</button>
+                <span class="hint">Drag and drop series from the pool to the top list to rank them.</span>
+            </div>
+        </div>
+
+        <div class="lists-container">
+            <div class="list-section">
+                <h2>Top List</h2>
+                <div id="ranked-list" class="anime-list ranked"></div>
+            </div>
+
+            <div class="list-section">
+                <h2>Unranked (Pool)</h2>
+                <div id="unranked-pool" class="anime-list unranked"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
