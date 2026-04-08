@@ -184,14 +184,20 @@ input:focus {
     cursor: grabbing;
 }
 
-/* Auto-numbering using JavaScript data-attribute instead of CSS */
-.ranked .anime-item::before {
-    content: attr(data-rank);
+/* The new, permanent rank number element */
+.anime-rank {
     font-size: 20px;
     font-weight: bold;
     color: #e94560;
     width: 30px;
     text-align: center;
+    flex-shrink: 0;
+    display: none; /* Hidden by default in the pool */
+}
+
+/* Only make the numbers visible when they are inside the Top List */
+.ranked .anime-rank {
+    display: block;
 }
 
 .anime-img {

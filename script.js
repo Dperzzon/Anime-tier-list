@@ -1,8 +1,8 @@
-// Paste your Bin ID between the quotes below!
+// Paste your short Bin ID between the quotes below!
 const BIN_ID = "69d373ebaaba882197cb9a21"; 
 
 let isLoggedIn = false;
-let secretApiKey = ""; // Your key is only stored in memory while editing
+let secretApiKey = ""; 
 
 // DOM Elements
 const loginBtn = document.getElementById('loginBtn');
@@ -25,17 +25,21 @@ const getListItems = (containerSelector) => {
     }));
 };
 
-// Stamps the permanent rank number on each item
+// NEW: Helper function to stamp the permanent rank number on items
 function updateRanks() {
     const rankedItems = document.querySelectorAll('#ranked-list .anime-item');
+    // Loops through all items (even hidden ones) and gives them their true number
     rankedItems.forEach((item, index) => {
-        item.setAttribute('data-rank', index + 1);
+        const rankDiv = item.querySelector('.anime-rank');
+        if(rankDiv) {
+            rankDiv.innerText = index + 1;
+        }
     });
 }
 
-// FUNCTION 1: Save to the online database
+// Save to the online database
 async function saveData(showNotification = false) {
-    if (!isLoggedIn) return; // Only save if we are logged in with the key
+    if (!isLoggedIn) return; 
 
     const dataToSave = { 
         ranked: getListItems('#ranked-list'), 
@@ -43,12 +47,11 @@ async function saveData(showNotification = false) {
     };
 
     try {
-        // Send the updated list to JSONBin
         const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'X-Master-Key': secretApiKey // Uses the key you logged in with!
+                'X-Master-Key': secretApiKey 
             },
             body: JSON.stringify(dataToSave)
         });
@@ -69,19 +72,19 @@ function initSortable() {
         animation: 150,
         disabled: true,
         onEnd: () => { 
-            updateRanks();
+            updateRanks(); // Recalculate numbers when dropped
             saveData(false); 
-        }
+        } 
     };
     sortableRanked = new Sortable(rankedList, options);
     sortablePool = new Sortable(unrankedPool, options);
 }
 
-// Login logic using the JSONBin Master Key
+// Login logic
 loginBtn.addEventListener('click', () => {
     if (!isLoggedIn) {
         const key = prompt("Enter your secret JSONBin API key to edit:");
-        if (!key) return; // Exit if user clicks cancel
+        if (!key) return; 
 
         secretApiKey = key;
         isLoggedIn = true;
@@ -109,7 +112,6 @@ loginBtn.addEventListener('click', () => {
     }
 });
 
-// Allow hitting Enter to search
 animeNameInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         e.preventDefault(); 
@@ -123,6 +125,11 @@ function createAnimeElement(name, imgUrl, commentText = "") {
     item.classList.add('anime-item');
     item.dataset.name = name;
     item.dataset.img = imgUrl || '';
+
+    // NEW: The physical number element
+    const rankDiv = document.createElement('div');
+    rankDiv.classList.add('anime-rank');
+    // Initially empty, will be filled by updateRanks()
 
     const imgDiv = document.createElement('div');
     imgDiv.classList.add('anime-img');
@@ -139,7 +146,6 @@ function createAnimeElement(name, imgUrl, commentText = "") {
     commentInput.value = commentText;
     commentInput.disabled = !isLoggedIn; 
     
-    // Auto-save when a comment is updated
     commentInput.addEventListener('change', () => saveData(false));
 
     const deleteBtn = document.createElement('button');
@@ -148,9 +154,12 @@ function createAnimeElement(name, imgUrl, commentText = "") {
     deleteBtn.title = "Remove anime";
     deleteBtn.addEventListener('click', () => {
         item.remove();
-        saveData(false); // Auto-save on delete
+        updateRanks(); // Recalculate numbers if one is deleted
+        saveData(false); 
     });
 
+    // Add elements in the correct order
+    item.appendChild(rankDiv); 
     item.appendChild(imgDiv);
     item.appendChild(titleDiv);
     item.appendChild(commentInput);
@@ -159,7 +168,7 @@ function createAnimeElement(name, imgUrl, commentText = "") {
     return item;
 }
 
-// Fetch from Jikan API and add to pool
+// Fetch from API
 addAnimeBtn.addEventListener('click', async () => {
     const nameInput = animeNameInput.value;
     if (nameInput.trim() === "") { 
@@ -210,13 +219,11 @@ searchInput.addEventListener('input', (e) => {
     });
 });
 
-// Manual save button
 saveBtn.addEventListener('click', () => saveData(true));
 
-// FUNCTION 2: Load data from the cloud on page load
+// Load data from the cloud
 async function loadLayout() {
     try {
-        // Fetch public data from the Bin ID
         const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
             headers: { 'X-Bin-Meta': 'false' }
         });
@@ -239,9 +246,13 @@ async function loadLayout() {
                 unrankedPool.appendChild(createAnimeElement(item.name, item.img, item.comment));
             });
         }
+
+        // Apply numbers as soon as the list is loaded
+        updateRanks();
+
     } catch (error) {
         console.error(error);
-        rankedList.innerHTML = "<p>Could not load the list from the cloud.</p>";
+        rankedList.innerHTML = `<div class="error-message">Could not load the list from the cloud. Verify your BIN_ID.</div>`;
     }
 }
 
