@@ -25,6 +25,14 @@ const getListItems = (containerSelector) => {
     }));
 };
 
+// Stamps the permanent rank number on each item
+function updateRanks() {
+    const rankedItems = document.querySelectorAll('#ranked-list .anime-item');
+    rankedItems.forEach((item, index) => {
+        item.setAttribute('data-rank', index + 1);
+    });
+}
+
 // FUNCTION 1: Save to the online database
 async function saveData(showNotification = false) {
     if (!isLoggedIn) return; // Only save if we are logged in with the key
@@ -60,7 +68,10 @@ function initSortable() {
         group: 'shared', 
         animation: 150,
         disabled: true,
-        onEnd: () => saveData(false) // Auto-save when dropping an item
+        onEnd: () => { 
+            updateRanks();
+            saveData(false); 
+        }
     };
     sortableRanked = new Sortable(rankedList, options);
     sortablePool = new Sortable(unrankedPool, options);

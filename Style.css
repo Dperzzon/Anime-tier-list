@@ -162,11 +162,6 @@ input:focus {
     gap: 8px;
 }
 
-/* CSS Counter for auto-numbering */
-.ranked {
-    counter-reset: rank;
-}
-
 /* Anime Item Row */
 .anime-item {
     display: flex;
@@ -189,10 +184,9 @@ input:focus {
     cursor: grabbing;
 }
 
-/* Auto-numbering for the ranked list */
+/* Auto-numbering using JavaScript data-attribute instead of CSS */
 .ranked .anime-item::before {
-    counter-increment: rank;
-    content: counter(rank);
+    content: attr(data-rank);
     font-size: 20px;
     font-weight: bold;
     color: #e94560;
