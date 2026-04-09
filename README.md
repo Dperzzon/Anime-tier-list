@@ -1,4 +1,4 @@
-# 🏆 My Anime Top List
+# 🏆 My Anime Tier List
 
 A clean, serverless, drag-and-drop anime ranking web application. Easily search for anime, add them to your unranked pool, and drag them into your numbered top list. The list is saved to the cloud so you can share it with friends, while edits are safely protected by an API key.
 
